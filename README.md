@@ -1,4 +1,4 @@
-audio-listening-test
+Audio Listening Test
 ====================
 
-An online listening test.
+A quick online survey to see if people can detect digital audio watermarks.
