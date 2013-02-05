@@ -1,0 +1,68 @@
+body {
+	font-family: 'Helvetica Neue', Arial, sans-serif;
+	margin: 30px;
+}
+
+audio {
+    width: 280px;
+}
+
+button {
+	background: #ddd;
+	cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    border: 0;
+    padding: 3px 12px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+}
+
+.listitem {
+    max-width: 900px;
+    min-width: 700px;
+}
+
+.switch {
+	line-height: 100px;
+	width: 100px;
+	font-size: 48px;
+	font-weight: bold;
+	margin: 16px auto;
+    padding: 0;
+}
+
+button:hover, button:active {
+	background: #fe9;
+}
+
+ol {
+    padding-left: 70px;
+}
+
+li {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.listitem {
+    font-size: 16px;
+    font-weight: normal;
+    vertical-align: middle;
+    width: 100%;
+    display: inline-block;
+}
+
+.col1, .col2, .col3 {
+	display: inline-block;
+	text-align: center;
+	width: 25%;
+}
+
+.col2 {
+    width: 45%;
+    min-width: 280px;
+    vertical-align: top;
+    padding-top: 30px;
+}
