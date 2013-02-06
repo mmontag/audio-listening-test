@@ -22,9 +22,9 @@
                     </div>
                 </div>
                 <div class="col2">
-                    <button class="toggle">Toggle &rarr;</button>
-                    <button class="toggle">Rewind &#8634; 3 sec</button><br>
-                    <button class="toggle">Toggle and Rewind &#8634; 3 sec</button>
+                    <button class="toggle" id="toggle">Toggle &rarr;</button>
+                    <button class="toggle" id="rewind">Rewind &#8634; 3 sec</button><br>
+                    <button class="toggle" id="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button>
                     <audio id="audio_0_0" controls="true" src="audio/file1.mp3"></audio>
                     <audio id="audio_0_1" controls="true" src="audio/file2.mp3" style="display: none"></audio>
                 </div>
@@ -45,6 +45,17 @@
         });
         $('#b').bind('click', function() {
             audioSwitcher1.switchToAndPlay(1);
+        });
+
+        $('#toggle').bind('click', function() {
+            audioSwitcher1.cycle();
+        });
+        $('#rewind').bind('click', function() {
+            audioSwitcher1.rewind(3);
+        });
+        $('#toggleAndRewind').bind('click', function() {
+            audioSwitcher1.rewind(3);
+            audioSwitcher1.cycle();
         });
     </script>
 <!-- Templates -->

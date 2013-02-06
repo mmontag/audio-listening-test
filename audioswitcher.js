@@ -40,16 +40,15 @@ AudioSwitcher.prototype.switchToAndPlay = function(idx) {
 	if (idx === this.currentIndex) {
 		return;
 	}
-	// Sync, switch, and play
-	if (this.currentIndex !== null) {
-		this.sync(this.currentIndex, idx);
-	}
+	// Switch and play
 	this.switchTo(idx);
 	this.play();
 };
 
 AudioSwitcher.prototype.switchTo = function(idx) {
 	console.log("Switching to", idx);
+	// Always sync before switching
+	this.sync(this.currentIndex, idx);
 	this.currentIndex = idx;
 	for (var i = 0; i < this.audioElements.length; i++) {
 		if (i === this.currentIndex) {
@@ -62,12 +61,25 @@ AudioSwitcher.prototype.switchTo = function(idx) {
 	}
 };
 
+AudioSwitcher.prototype.getActiveElement = function() {
+	return this.audioElements[this.currentIndex];
+}
+
+AudioSwitcher.prototype.rewind = function(seconds) {
+	seconds = seconds || 3;
+	var el = this.getActiveElement();
+	el.currentTime = Math.max(el.currentTime - 3, 0);
+}
+
 AudioSwitcher.prototype.cycle = function() {
-	this.switchTo((this.currentIndex + 1) % this.audioElements.length);
+	var nextIdx = (this.currentIndex + 1) % this.audioElements.length;
+	this.switchTo(nextIdx);
 };
 
 AudioSwitcher.prototype.sync = function(from, to) {
-	this.audioElements[to].currentTime = this.audioElements[from].currentTime;
+	if (from !== null) {
+		this.audioElements[to].currentTime = this.audioElements[from].currentTime;
+	}
 //	for (var i = 1; i < this.audioElements.length; i++) {
 //		this.audioElements[i].currentTime = this.masterAudio.currentTime;
 //	}
