@@ -4,31 +4,29 @@
 	$seed = substr($_GET['token'], 0, 32);
 	$file = $_GET['file'];
 
-	/.2/354/q23.547$%*%^$#^?$%>&$%>^$?%^>@$%?>^@$?%>#$.
-
 	$file_relative_path = "audio";
 
+
+  echo "<pre>";
+  // Scan and match files of the format "name_0.mp3", "name_1.mp3", etc.
 	function fileScan($dir) {
-		global $media;
 		$filemap = array();
 		@$files = scandir($dir);
 		foreach($files as $file) {
-			if(substr($subfile,0,1)==".") continue;
-			$prefix = sprintf("%d", substr($file, 0, strpos($file, "-")));
-			if(is_numeric($prefix) && $prefix > 0) {
-				$filemap[$prefix][] = "$dir/$file";
-			} else if(is_dir("$dir/$file") && is_numeric($file) && $file > 0) {
-				$prefix = sprintf("%d",$file);
-				$subfiles = scandir("$dir/$file");
-				foreach($subfiles as $subfile) {
-					if(is_dir($subfile)) continue;
-					if(substr($subfile,0,1)==".") continue;
-					$filemap[$prefix][] = "$dir/$file/$subfile";
-				}
-			}
+      echo($file.'<br>');
+	    $matches = array();
+      if(is_dir($file)) continue;
+      if(!preg_match('/^([A-Za-z0-9]+)_([0-9]+)\.(mp3|wav)$/', $file, $matches)) continue;
+      $audioName = $matches[1];
+      $num = $matches[2];
+      $ext = $matches[3];
+      $filemap[$audioName][] = array($num, $ext);
 		}
 		return $filemap;
 	}
+
+  print_r (fileScan($file_relative_path));
+  die();
 
 	$f = $_GET["f"];
 	list($idx1,$idx2) = explode(",",$f);

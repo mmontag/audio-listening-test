@@ -1,3 +1,6 @@
+<?php
+
+?>
 <!doctype html>
 <html>
 <head>
@@ -25,8 +28,8 @@
                     <button class="toggle" id="toggle">Toggle &rarr;</button>
                     <button class="toggle" id="rewind">Rewind &#8634; 3 sec</button><br>
                     <button class="toggle" id="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button>
-                    <audio id="audio_0_0" controls="true" src="audio/file1.mp3"></audio>
-                    <audio id="audio_0_1" controls="true" src="audio/file2.mp3" style="display: none"></audio>
+                    <audio id="audio_0_0" controls="true" src="audio/file_1.mp3"></audio>
+                    <audio id="audio_0_1" controls="true" src="audio/file_2.mp3" style="display: none"></audio>
                 </div>
                 <div class="col3">
                     <button class="switch" id="b">B</button>
