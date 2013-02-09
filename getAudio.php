@@ -6,6 +6,7 @@
 
 	$file_relative_path = "audio";
 
+  $token = substr(md5(microtime()), 0, 6);
 
   echo "<pre>";
   // Scan and match files of the format "name_0.mp3", "name_1.mp3", etc.
@@ -13,19 +14,35 @@
 		$filemap = array();
 		@$files = scandir($dir);
 		foreach($files as $file) {
-      echo($file.'<br>');
 	    $matches = array();
       if(is_dir($file)) continue;
-      if(!preg_match('/^([A-Za-z0-9]+)_([0-9]+)\.(mp3|wav)$/', $file, $matches)) continue;
-      $audioName = $matches[1];
+      if(!preg_match('/^([A-Za-z0-9]+)_([A-Za-z0-9]+)\.(mp3|wav)$/', $file, $matches)) continue;
+      $filename = $matches[0];
+      $audioname = $matches[1];
       $num = $matches[2];
       $ext = $matches[3];
-      $filemap[$audioName][] = array($num, $ext);
+      $filemap[$audioname][] = array($filename, $num, $ext);
 		}
-		return $filemap;
+  	return $filemap;
 	}
 
-  print_r (fileScan($file_relative_path));
+  function shuffleMap($filemap, $token) {
+    $indexedMap = array();
+    $i = 0;
+    foreach($filemap as $_ => $value) {
+      shuf($value, $token . $value[0]);
+      $indexedMap[$i] = $value;
+      $i++;
+    }
+    $filemap = $indexedMap;
+    shuf($filemap, $token);
+    return $filemap;
+  }
+
+  $filemap = fileScan($file_relative_path);
+  $filemap = shuffleMap($filemap, $token);
+
+  print_r ($filemap);
   die();
 
 	$f = $_GET["f"];
