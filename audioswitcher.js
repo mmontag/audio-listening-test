@@ -1,25 +1,47 @@
 // see https://github.com/hungrymedia/hm-audio-sync/blob/master/hm-audio-sync.js
 
-var AudioSwitcher = function(masterAudioElement, slaveAudioElement) {
-	this.audioElements = [].splice.call(arguments, 0);
+var AudioSwitcher = function(containerElement) {
+	//document.getElementById('audio_0_0'), document.getElementById('audio_0_1');
+	this.audioElements = [];
+	this.$el = $(containerElement);
+	//.splice.call(arguments, 0);
 	this.currentIndex = null;
-
-	this.masterAudio = masterAudioElement;
-	this.masterAudio.addEventListener('play', this.onMasterPlay.bind(this));
-	this.masterAudio.addEventListener('pause', this.onMasterPause.bind(this));
+	this.init();
+	//this.masterAudio = masterAudioElement;
+	//this.masterAudio.addEventListener('play', this.onMasterPlay.bind(this));
+	//this.masterAudio.addEventListener('pause', this.onMasterPause.bind(this));
 };
 
 AudioSwitcher.prototype.init = function() {
-	
+	var self = this;
+	//$(this.masterAudio).bind('play', this.onMasterPlay);
+	//$(this.masterAudio).bind('pause', this.onMasterPause);
+	this.audioElements = this.$el.find('audio');
+	this.$el.find('.switch.a').bind('click', function() {
+		self.switchToAndPlay(0);
+	});
+	this.$el.find('.switch.b').bind('click', function() {
+		self.switchToAndPlay(1);
+	});
+	this.$el.find('.toggle').bind('click', function() {
+		self.cycle();
+	});
+	this.$el.find('.rewind').bind('click', function() {
+		self.rewind(3);
+	});
+	this.$el.find('.toggleAndRewind').bind('click', function() {
+		self.rewind(3);
+		self.cycle();
+	});
 };
 
-AudioSwitcher.prototype.onMasterPlay = function() {
-	//this.syncTimer = setInterval(this.sync.bind(this), 250);
-};
-
-AudioSwitcher.prototype.onMasterPause = function() {
-	//clearInterval(this.syncTimer);
-};
+//AudioSwitcher.prototype.onMasterPlay = function() {
+//	//this.syncTimer = setInterval(this.sync.bind(this), 250);
+//};
+//
+//AudioSwitcher.prototype.onMasterPause = function() {
+//	//clearInterval(this.syncTimer);
+//};
 
 AudioSwitcher.prototype.play = function() {
 	for (var i = 0; i < this.audioElements.length; i++) {
