@@ -20,8 +20,15 @@ button {
 }
 
 .listitem {
-    max-width: 900px;
-    min-width: 700px;
+    width: 700px;
+    margin: 30px 0;
+    padding: 30px 0;
+    border-radius: 20px;
+    background: #f0f0f0;
+    font-size: 16px;
+    font-weight: normal;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .switch {
@@ -29,7 +36,7 @@ button {
 	width: 100px;
 	font-size: 48px;
 	font-weight: bold;
-	margin: 16px auto;
+	margin: 0 auto 16px auto;
     padding: 0;
 }
 
@@ -46,14 +53,6 @@ li {
     font-weight: bold;
 }
 
-.listitem {
-    font-size: 16px;
-    font-weight: normal;
-    vertical-align: middle;
-    width: 100%;
-    display: inline-block;
-}
-
 .col1, .col2, .col3 {
 	display: inline-block;
 	text-align: center;
@@ -63,6 +62,6 @@ li {
 .col2 {
     width: 45%;
     min-width: 280px;
-    vertical-align: top;
-    padding-top: 30px;
+    vertical-align: bottom;
+    padding: 10px;
 }
