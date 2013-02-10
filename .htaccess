@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule getAudio.(mp3|wav)$ getAudio.php [L,NC,QSA]
