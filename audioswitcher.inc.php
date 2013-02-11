@@ -1,16 +1,20 @@
 <?php
 
-$FILE_RELATIVE_PATH = "audio";
+define('FILE_RELATIVE_PATH', 'audio');
+define('ALLOWED_EXTENSIONS', '(mp3|wav|ogg)');
 $token = getToken();
-$filemap = shuffleMap(fileScan($FILE_RELATIVE_PATH), getSeed($token));
+$filemap = shuffleMap(fileScan(FILE_RELATIVE_PATH), getSeed($token));
 
-// gets a provided token or generates a new one
+// gets a token from query string, cookies, or generates a new one
 function getToken() {
   if(isset($_GET['token'])) {
-    $token = $_GET['token'];
+    $token = intval($_GET['token']);
+  } else if (isset($_COOKIE['token'])) {
+    $token = intval($_COOKIE['token']);
   } else {
-    $token = microtime();
+    $token = mt_rand(1000000,9999999);
   }
+  setcookie('token', $token, time() + 30 * 60);
   return $token;
 }
 
@@ -42,7 +46,7 @@ function fileScan($dir) {
   foreach($files as $file) {
     $matches = array();
     if(is_dir($file)) continue;
-    if(!preg_match('/^([A-Za-z0-9]+)_([A-Za-z0-9]+)\.(mp3|wav)$/', $file, $matches)) continue;
+    if(!preg_match('/^([A-Za-z0-9]+)_([A-Za-z0-9]+)\.'.ALLOWED_EXTENSIONS.'$/', $file, $matches)) continue;
     $filename = $dir . "/" . $matches[0];
     $name = $matches[1];
     $num = $matches[2];
@@ -81,7 +85,7 @@ function getFile($filename) {
   if(!file_exists($filename))
     die("Couldn't locate this file.");
   $extension = substr($filename,strrpos($filename,".") + 1);
-  if (preg_match('/^(mp3|wav)$/i', $extension) !== 1)
+  if (preg_match('/^'.ALLOWED_EXTENSIONS.'$/i', $extension) !== 1)
     die("Not an allowed file extension.");
   $downloadname = "document.$extension";
   $finfo = finfo_open(FILEINFO_MIME);
