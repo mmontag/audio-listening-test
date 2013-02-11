@@ -17,6 +17,17 @@ AudioSwitcher.prototype.init = function() {
 	//$(this.masterAudio).bind('play', this.onMasterPlay);
 	//$(this.masterAudio).bind('pause', this.onMasterPause);
 	this.audioElements = this.$el.find('audio');
+	this.audioElements.bind('pause', function() {
+		self.$el.find('.switch').removeClass('active');
+	});
+	this.audioElements.bind('play', function(event) {
+		var index = self.audioElements.index(event.target);
+		if (self.currentIndex !== null) {
+			//index = self.currentIndes;
+			if (index !== self.currentIndex) return;
+		}
+		self.$el.find('.switch').eq(index).addClass('active');
+	});
 	this.$el.find('.switch.a').bind('click', function() {
 		self.switchToAndPlay(0);
 	});
@@ -76,9 +87,11 @@ AudioSwitcher.prototype.switchTo = function(idx) {
 		if (i === this.currentIndex) {
 			this.audioElements[i].volume = 1;
 			this.audioElements[i].style.display = 'inline-block';
+			this.$el.find('.switch').eq(i).addClass('active');
 		} else {
 			this.audioElements[i].volume = 0;
 			this.audioElements[i].style.display = 'none';
+			this.$el.find('.switch').eq(i).removeClass('active');
 		}
 	}
 };
@@ -95,7 +108,7 @@ AudioSwitcher.prototype.rewind = function(seconds) {
 
 AudioSwitcher.prototype.cycle = function() {
 	var nextIdx = (this.currentIndex + 1) % this.audioElements.length;
-	this.switchTo(nextIdx);
+	this.switchToAndPlay(nextIdx);
 };
 
 AudioSwitcher.prototype.sync = function(from, to) {

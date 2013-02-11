@@ -40,6 +40,10 @@ button {
     padding: 0;
 }
 
+.switch.active {
+    background-color: #bd9;
+}
+
 button:hover, button:active {
 	background: #fe9;
 }
