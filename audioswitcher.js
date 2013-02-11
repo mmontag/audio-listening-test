@@ -27,6 +27,10 @@ AudioSwitcher.prototype.init = function() {
 			if (index !== self.currentIndex) return;
 		}
 		self.$el.find('.switch').eq(index).addClass('active');
+		// blunt hack: pause all audio elements outside this group
+		$('audio').not(self.$el.find('audio')).each(function() {
+			this.pause();
+		});
 	});
 	this.$el.find('.switch.a').bind('click', function() {
 		self.switchToAndPlay(0);
