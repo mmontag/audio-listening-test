@@ -1,6 +1,8 @@
 body {
 	font-family: 'Helvetica Neue', Arial, sans-serif;
-	margin: 30px;
+	margin: 0 auto;
+    padding: 30px;
+    max-width: 800px;
 }
 
 audio {
@@ -24,7 +26,7 @@ button {
     margin: 30px 0;
     padding: 30px 0;
     border-radius: 20px;
-    background: #f0f0f0;
+    background: #fafafa;
     font-size: 16px;
     font-weight: normal;
     vertical-align: middle;
@@ -48,8 +50,17 @@ button:hover, button:active {
 	background: #fe9;
 }
 
+button.submit {
+    font-size: 180%;
+    line-height: 140%;
+    font-weight: 300;
+    margin: 0 auto;
+    display: block;
+}
+
 ol {
     padding-left: 70px;
+    white-space: nowrap;
 }
 
 li {
@@ -68,4 +79,9 @@ li {
     min-width: 280px;
     vertical-align: bottom;
     padding: 10px;
+}
+
+p {
+    font-weight: 300;
+    line-height: 140%;
 }

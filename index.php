@@ -1,6 +1,7 @@
 <?php
 
 require("audioswitcher.inc.php");
+require("dbconfig.inc.php");
 
 ?>
 <!doctype html>
@@ -17,8 +18,59 @@ require("audioswitcher.inc.php");
 	<link rel="stylesheet" href="audiotest.css">
 </head>
 <body>
-	<h1>Audio Test</h1>
-  <form action="submit.php" method="post">
+<h1>Audio Test</h1>
+<?
+if(isset($_POST['token'])) {
+
+  $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+
+  $token = intval($_POST['token']);
+  $ip_address = $mysqli->escape_string($_SERVER['REMOTE_HOST']);
+  $environment = $mysqli->escape_string($_POST['environment']);
+  $device = $mysqli->escape_string($_POST['device']);
+
+  $num_correct = 0;
+
+  foreach($_POST as $key => $value) {
+    $matches = array();
+    $match = preg_match('/^audio_([0-9]+)$/', $key, $matches);
+    if ($match === 1) {
+      // This item is a question response
+      $audio_id = intval($matches[1]);
+      $response = intval($value);
+      $audio_name = $filemap[$audio_id][0]['name'];
+      $correct = $filemap[$audio_id][$response]['num'] == '1'; // when response value matches suffix for original files
+      $query = "INSERT INTO responses (audio_id, audio_name, response, correct, environment, device, ip_address, token)
+                  VALUES ('$audio_id', '$audio_name', '$response', '$correct', '$environment', '$device', '$ip_address', '$token')";
+      $result = $mysqli->query($query);
+      // echo("running $query.<br>");
+      // echo($mysqli->error."<br>");
+      if ($correct) $num_correct++;
+    }
+  }
+  ?>
+  <h2>Results</h2>
+  <h3 class="score">You scored <?=$num_correct?> out of <?=count($filemap)?> correct.</h3>
+  <p>Thanks for taking the audio watermark listening test!</p>
+  <?
+} else {
+  ?>
+  <p>
+    This survey will test your ability to detect a digital audio watermark embedded in music files.
+  <p>
+    Digital audio watermarks are designed to hide extra information in an audio signal, usually for
+    copyright enforcement purposes. The watermarks are designed to be inaudible, but necessarily add
+    some distortion to the original audio.
+  <p>
+    Below, you will find <?=count($filemap)?> groups of audio samples. In each group, you are presented with
+    two versions of the same music sample. One
+    contains a digital watermark, and the other does not. You can switch back and forth between the two audio
+    samples using the control buttons. Listen closely and try to determine which sample contains a watermark
+    in each group.
+  <p>
+    The watermarking technology is the same in all audio samples.
+    Your score will be reported after you submit your answers.
+  <form action="index.php" method="post">
   <input type="hidden" name="token" value="<?=$token?>"/>
 	<ol>
     <?php
@@ -36,7 +88,7 @@ require("audioswitcher.inc.php");
                 <div class="col2">
                     <button type="button" class="toggle">Toggle &harr;</button>
                     <button type="button" class="rewind">Rewind &#8634; 3 sec</button><br>
-                    <button type="button" class="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button>
+                    <button type="button" class="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button><br>
                     <audio id="audio_<?=$index?>_0" controls="true" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,0"></audio>
                     <audio id="audio_<?=$index?>_1" controls="true" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,1" style="display: none"></audio>
                 </div>
@@ -56,18 +108,24 @@ require("audioswitcher.inc.php");
     }
     ?>
 	</ol>
+   <div class="split">
+      <p>My listening environment is:
+      <p>
+      <input type="radio" id="environment_1" name="environment" value="quiet"><label for="environment_1">Quiet</label>
+      <input type="radio" id="environment_2" name="environment" value="normal"><label for="environment_2">Normal</label>
+      <input type="radio" id="environment_3" name="environment" value="loud"><label for="environment_3">Loud</label>
+  </div>
+  <div class="split">
+      <p>I am listening with:
+      <p>
+      <input type="radio" id="device_1" name="device" value="headphones"><label for="device_1">Headphones</label>
+      <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label>
+      <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label>
+  </div>
+  <button class="submit">Submit My Answers</button>
   </form>
-<!-- Templates -->
-<script type="text/template" id="tpl-switcher">
-  <li>
-    <a href="{{ url }}" data-autoplayurl="{{ autoPlayUrl }}" target="m">{% if (artist) { %}{{ artist }} - {% } %}{{ track }}</a>
-    {% if (popularity !== undefined) { %}
-    <span class="album withPopularity">{{ album }}</span>
-    <span class="popularity"><span class="popularityValue" style="width: {{ popularity }}%"></span></span>
-    {% } else { %}
-    <span class="album">{{ album }}</span>
-    {% } %}
-  </li>
-</script>
+  <?
+}
+?>
 </body>
 </html>
