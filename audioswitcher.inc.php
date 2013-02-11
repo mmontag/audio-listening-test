@@ -88,10 +88,17 @@ function getFile($filename) {
   if (preg_match('/^'.ALLOWED_EXTENSIONS.'$/i', $extension) !== 1)
     die("Not an allowed file extension.");
   $downloadname = "document.$extension";
-  $finfo = finfo_open(FILEINFO_MIME);
-
+  // $finfo = finfo_open(FILEINFO_MIME);
+  if ($extension == 'mp3')
+    $mime_type = 'audio/mpeg';
+  else if ($extension == 'wav')
+    $mime_type = 'audio/wav';
+  else if ($extension == 'ogg')
+    $mime_type = 'audio/ogg';
+  else
+    $mime_type = null;
   // the proxy layer must support byte-range requests for audio seeking.
-  serve_file_resumable($filename, finfo_file($finfo, $filename), $downloadname);
+  serve_file_resumable($filename, $mime_type, $downloadname);
 }
 
 function serve_file_resumable ($file, $contenttype = 'application/octet-stream', $downloadname = null) {
@@ -107,13 +114,16 @@ function serve_file_resumable ($file, $contenttype = 'application/octet-stream',
   }
 
   // Get the 'Range' header if one was sent
-  if (isset($_SERVER['HTTP_RANGE'])) $range = $_SERVER['HTTP_RANGE']; // IIS/Some Apache versions
-  else if ($apache = apache_request_headers()) { // Try Apache again
+  if (isset($_SERVER['HTTP_RANGE'])) {
+    $range = $_SERVER['HTTP_RANGE']; // IIS/Some Apache versions
+  } else if ($apache = apache_request_headers()) { // Try Apache again
     $headers = array();
     foreach ($apache as $header => $val) $headers[strtolower($header)] = $val;
     if (isset($headers['range'])) $range = $headers['range'];
     else $range = FALSE; // We can't get the header/there isn't one set
-  } else $range = FALSE; // We can't get the header/there isn't one set
+  } else {
+    $range = FALSE; // We can't get the header/there isn't one set
+  }
 
   // Get the data range requested (if any)
   $filesize = filesize($file);
@@ -172,5 +182,18 @@ function serve_file_resumable ($file, $contenttype = 'application/octet-stream',
 
 }
 
+if (!function_exists('apache_request_headers')) {
+  function apache_request_headers() {
+    foreach($_SERVER as $key=>$value) {
+      if (substr($key,0,5)=="HTTP_") {
+        $key=str_replace(" ","-",ucwords(strtolower(str_replace("_"," ",substr($key,5)))));
+        $out[$key]=$value;
+      }else{
+        $out[$key]=$value;
+      }
+    }
+    return $out;
+  }
+}
 
 ?>
