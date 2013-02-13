@@ -30,6 +30,7 @@ if(isset($_POST['token'])) {
   $device = $mysqli->escape_string($_POST['device']);
 
   $num_correct = 0;
+  $correct = array();
 
   foreach($_POST as $key => $value) {
     $matches = array();
@@ -39,18 +40,28 @@ if(isset($_POST['token'])) {
       $audio_id = intval($matches[1]);
       $response = intval($value);
       $audio_name = $filemap[$audio_id][0]['name'];
-      $correct = $filemap[$audio_id][$response]['num'] == '1'; // when response value matches suffix for original files
+      $correct[$audio_id] = $corr = $filemap[$audio_id][$response]['num'] == '1'; // when response value matches suffix for original files
       $query = "INSERT INTO responses (audio_id, audio_name, response, correct, environment, device, ip_address, token)
-                  VALUES ('$audio_id', '$audio_name', '$response', '$correct', '$environment', '$device', '$ip_address', '$token')";
+                  VALUES ('$audio_id', '$audio_name', '$response', '$corr', '$environment', '$device', '$ip_address', '$token')";
       $result = $mysqli->query($query);
       // echo("running $query.<br>");
       // echo($mysqli->error."<br>");
-      if ($correct) $num_correct++;
+      if ($corr) $num_correct++;
     }
   }
   ?>
   <h2>Results</h2>
   <h3 class="score">You scored <?=$num_correct?> out of <?=count($filemap)?> correct.</h3>
+  <ol><?
+  foreach($correct as $key => $value) {
+    print ("<li>[".$filemap[$key][0]['name']."] ");
+    if ($value == true)
+      print ("<span class='correct'>correct</span>");
+    else
+      print ("<span class='incorrect'>incorrect</span>");
+  }
+  ?>
+  </ol>
   <p>Thanks for taking the audio watermark listening test!</p>
   <?
 } else {
@@ -72,7 +83,7 @@ if(isset($_POST['token'])) {
     Your score will be reported after you submit your answers.
   <form action="index.php" method="post">
   <input type="hidden" name="token" value="<?=$token?>"/>
-	<ol>
+	<ol class="quiz">
     <?php
     foreach($filemap as $index => $fileset) {
     ?>
@@ -108,19 +119,30 @@ if(isset($_POST['token'])) {
     }
     ?>
 	</ol>
-   <div class="split">
-      <p>My listening environment is:
-      <p>
-      <input type="radio" id="environment_1" name="environment" value="quiet"><label for="environment_1">Quiet</label>
-      <input type="radio" id="environment_2" name="environment" value="normal"><label for="environment_2">Normal</label>
-      <input type="radio" id="environment_3" name="environment" value="loud"><label for="environment_3">Loud</label>
-  </div>
-  <div class="split">
-      <p>I am listening with:
-      <p>
-      <input type="radio" id="device_1" name="device" value="headphones"><label for="device_1">Headphones</label>
-      <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label>
-      <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label>
+  <div class="centered">
+      <div class="split">
+          <p>My listening environment is:
+          <p>
+              <input type="radio" id="environment_1" name="environment" value="quiet"><label for="environment_1">Quiet</label><br>
+              <input type="radio" id="environment_2" name="environment" value="normal"><label for="environment_2">Normal</label><br>
+              <input type="radio" id="environment_3" name="environment" value="loud"><label for="environment_3">Loud</label><br>
+      </div>
+      <div class="split">
+          <p>I am listening with:
+          <p>
+              <input type="radio" id="device_1" name="device" value="headphones"><label for="device_1">Headphones</label><br>
+              <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label><br>
+              <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label><br>
+      </div>
+      <!--
+      <div class="split">
+          <p>Did the watermarks bother you?
+          <p>
+              <input type="radio" id="device_1" name="device" value="headphones"><label for="device_1">Headphones</label><br>
+              <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label><br>
+              <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label><br>
+      </div>
+      -->
   </div>
   <button class="submit">Submit My Answers</button>
   </form>

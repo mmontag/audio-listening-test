@@ -58,12 +58,12 @@ button.submit {
     display: block;
 }
 
-ol {
+ol.quiz {
     padding-left: 70px;
     white-space: nowrap;
 }
 
-li {
+ol.quiz li {
     font-size: 40px;
     font-weight: bold;
 }
@@ -84,4 +84,24 @@ li {
 p {
     font-weight: 300;
     line-height: 140%;
+}
+
+.split {
+    width: 150px;
+    display: inline-block;
+    margin: 0 20px 20px 0;
+    height: 200px;
+    text-align: left;
+}
+
+.centered {
+    text-align: center;
+}
+
+.correct {
+    color: #2e8b57;
+}
+
+.incorrect {
+    color: #cb2000;
 }
