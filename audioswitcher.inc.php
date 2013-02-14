@@ -46,7 +46,7 @@ function fileScan($dir) {
   foreach($files as $file) {
     $matches = array();
     if(is_dir($file)) continue;
-    if(!preg_match('/^([A-Za-z0-9]+)_([A-Za-z0-9]+)\.'.ALLOWED_EXTENSIONS.'$/', $file, $matches)) continue;
+    if(!preg_match('/^([A-Za-z0-9 ]+)_([A-Za-z0-9]+)\.'.ALLOWED_EXTENSIONS.'$/', $file, $matches)) continue;
     $filename = $dir . "/" . $matches[0];
     $name = $matches[1];
     $num = $matches[2];

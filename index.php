@@ -87,7 +87,7 @@ if(isset($_POST['token'])) {
     <?php
     foreach($filemap as $index => $fileset) {
     ?>
-        <li>
+        <li><h2 class="question"><?=htmlspecialchars($fileset[0]['name'])?></h2>
             <div class="listitem" id="audioswitcher<?=$index?>">
                 <div class="col1">
                     <button type="button" class="switch a">A</button>
