@@ -5,6 +5,7 @@ var AudioSwitcher = function(containerElement) {
 	this.audioElements = [];
 	this.$el = $(containerElement);
 	//.splice.call(arguments, 0);
+	this.timeDriftThreshold = 0.5; // seconds
 	this.currentIndex = null;
 	this.init();
 	//this.masterAudio = masterAudioElement;
@@ -94,11 +95,31 @@ AudioSwitcher.prototype.switchTo = function(idx) {
 			this.$el.find('.switch').eq(i).addClass('active');
 		} else {
 			this.audioElements[i].volume = 0;
+			// this.fadeVolume(this.audioElements[i], 0);
 			this.audioElements[i].style.display = 'none';
 			this.$el.find('.switch').eq(i).removeClass('active');
 		}
 	}
 };
+
+// Currently unused
+AudioSwitcher.prototype.fadeVolume = function(audioElement, fadeTo, callback) {
+	var self = this;
+	var step = 0.02;
+	if (audioElement.volume > fadeTo) step = step * -1;
+	var duration = 0.1;
+	var interval = duration / step;
+	if (Math.abs(audioElement.volume - fadeTo) <= Math.abs(step)) {
+		console.log('finishing fade', audioElement);
+		audioElement.volume = fadeTo;
+	} else {
+		console.log('setting volume to', audioElement.volume + step);
+		audioElement.volume += step;
+		setTimeout(function() {
+			self.fadeVolume(audioElement, fadeTo, callback);
+		}, interval);
+	}
+}
 
 AudioSwitcher.prototype.getActiveElement = function() {
 	return this.audioElements[this.currentIndex];
@@ -107,7 +128,7 @@ AudioSwitcher.prototype.getActiveElement = function() {
 AudioSwitcher.prototype.rewind = function(seconds) {
 	seconds = seconds || 3;
 	var el = this.getActiveElement();
-	el.currentTime = Math.max(el.currentTime - 3, 0);
+	el.currentTime = Math.max(el.currentTime - seconds, 0);
 }
 
 AudioSwitcher.prototype.cycle = function() {
@@ -117,9 +138,10 @@ AudioSwitcher.prototype.cycle = function() {
 
 AudioSwitcher.prototype.sync = function(from, to) {
 	if (from !== null) {
-		this.audioElements[to].currentTime = this.audioElements[from].currentTime;
+		var currentTime = this.audioElements[from].currentTime;
+		if (Math.abs(this.audioElements[to].currentTime - currentTime) > this.timeDriftThreshold) {
+			console.log('syncing audio...');
+			this.audioElements[to].currentTime = this.audioElements[from].currentTime;
+		}
 	}
-//	for (var i = 1; i < this.audioElements.length; i++) {
-//		this.audioElements[i].currentTime = this.masterAudio.currentTime;
-//	}
 };
