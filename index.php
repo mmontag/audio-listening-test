@@ -77,7 +77,7 @@ if(isset($_POST['token'])) {
     two versions of the same music sample. One
     contains a digital watermark, and the other does not. You can switch back and forth between the two audio
     samples using the control buttons. Listen closely and try to determine which sample contains a watermark
-    in each group.
+    in each group. For best results, use headphones and take the test in a quiet environment.
   <p>
     The watermarking technology is the same in all audio samples.
     Your score will be reported after you submit your answers.
