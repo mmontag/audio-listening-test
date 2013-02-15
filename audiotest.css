@@ -10,7 +10,7 @@ audio {
 }
 
 button {
-	background: #ddd;
+	background: rgba(0,0,0,0.13);
 	cursor: pointer;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     border: 0;
@@ -108,5 +108,10 @@ p {
 }
 
 .incorrect {
-    color: #cb2000;
+    color: #ca5050;
+}
+
+.error {
+    background-color: #ffeaea;
+    outline: 2px solid #ca5050;
 }

@@ -92,7 +92,7 @@ if(isset($_POST['token'])) {
                 <div class="col1">
                     <button type="button" class="switch a">A</button>
                     <div class="chooser">
-                        <input type="radio" id="chooser_<?=$index?>_0" name="audio_<?=$index?>" value="0">
+                        <input class="required" type="radio" id="chooser_<?=$index?>_0" name="audio_<?=$index?>" value="0">
                         <label for="chooser_<?=$index?>_0">A is Watermarked</label>
                     </div>
                 </div>
@@ -106,7 +106,7 @@ if(isset($_POST['token'])) {
                 <div class="col3">
                     <button type="button" class="switch b">B</button>
                     <div class="chooser">
-                        <input type="radio" id="chooser_<?=$index?>_1" name="audio_<?=$index?>" value="1">
+                        <input class="required" type="radio" id="chooser_<?=$index?>_1" name="audio_<?=$index?>" value="1">
                         <label for="chooser_<?=$index?>_1">B is Watermarked</label>
                     </div>
                 </div>
@@ -120,6 +120,7 @@ if(isset($_POST['token'])) {
     ?>
 	</ol>
   <div class="centered">
+      <!--
       <div class="split">
           <p>My listening environment is:
           <p>
@@ -134,7 +135,6 @@ if(isset($_POST['token'])) {
               <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label><br>
               <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label><br>
       </div>
-      <!--
       <div class="split">
           <p>Did the watermarks bother you?
           <p>
@@ -144,7 +144,38 @@ if(isset($_POST['token'])) {
       </div>
       -->
   </div>
-  <button class="submit">Submit My Answers</button>
+  <button class="submit" type="button">Submit My Answers</button>
+  <p class="centered formMessage"></p>
+  <script>
+      var $button = $('button.submit');
+      var $form = $('form');
+      $button.bind('click', function() {
+        if (validateForm()) {
+            $form.submit();
+        }
+      });
+      $form.find('input').bind('change', resetValidation);
+
+      function validateForm() {
+        var isValid = true;
+        $form.find('.required').each(function() {
+            var name = $(this).attr('name');
+            if (!$form.find('input[name=' + name + ']:checked').val()) {
+                $(this).closest('.listitem').addClass('error');
+                isValid = false;
+            }
+        });
+        if (!isValid) {
+          $('.formMessage').text('Please answer all the questions. The questions you forgot to answer are highlighted above.');
+        }
+        return isValid;
+      }
+      function resetValidation(event) {
+        $container = $(event.target).closest('.listitem');
+        $container.removeClass('error');
+        $('.formMessage').text('');
+      }
+  </script>
   </form>
   <?
 }
