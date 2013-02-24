@@ -1,7 +1,8 @@
 <?php
 
 define('FILE_RELATIVE_PATH', 'audio');
-define('ALLOWED_EXTENSIONS', '(mp3|wav|ogg)');
+define('SCANNED_EXTENSIONS', '(mp3)');
+define('ALLOWED_EXTENSIONS', '(mp3|ogg|wav)');
 $token = getToken();
 $filemap = shuffleMap(fileScan(FILE_RELATIVE_PATH), getSeed($token));
 
@@ -46,7 +47,7 @@ function fileScan($dir) {
   foreach($files as $file) {
     $matches = array();
     if(is_dir($file)) continue;
-    if(!preg_match('/^([A-Za-z0-9 ]+)_([A-Za-z0-9]+)\.'.ALLOWED_EXTENSIONS.'$/', $file, $matches)) continue;
+    if(!preg_match('/^([A-Za-z0-9\- ]+)_([A-Za-z0-9]+)\.'.SCANNED_EXTENSIONS.'$/', $file, $matches)) continue;
     $filename = $dir . "/" . $matches[0];
     $name = $matches[1];
     $num = $matches[2];
