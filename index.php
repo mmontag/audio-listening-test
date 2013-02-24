@@ -40,7 +40,7 @@ if(isset($_POST['token'])) {
       $audio_id = intval($matches[1]);
       $response = intval($value);
       $audio_name = $filemap[$audio_id][0]['name'];
-      $correct[$audio_id] = $corr = $filemap[$audio_id][$response]['num'] == '1'; // when response value matches suffix for original files
+      $correct[$audio_id] = $corr = $filemap[$audio_id][$response]['num'] == '2'; // when response value matches suffix for watermarked files
       $query = "INSERT INTO responses (audio_id, audio_name, response, correct, environment, device, ip_address, token)
                   VALUES ('$audio_id', '$audio_name', '$response', '$corr', '$environment', '$device', '$ip_address', '$token')";
       $result = $mysqli->query($query);
@@ -100,8 +100,16 @@ if(isset($_POST['token'])) {
                     <button type="button" class="toggle">Toggle &harr;</button>
                     <button type="button" class="rewind">Rewind &#8634; 3 sec</button><br>
                     <button type="button" class="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button><br>
-                    <audio id="audio_<?=$index?>_0" controls="true" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,0"></audio>
-                    <audio id="audio_<?=$index?>_1" controls="true" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,1" style="display: none"></audio>
+                    <audio id="audio_<?=$index?>_0" controls="true">
+                        <source type="audio/ogg" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,0&ext=ogg">
+                        <source type="audio/mpeg" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,0&ext=mp3">
+                        Your browser does not support the Audio element.
+                    </audio>
+                    <audio id="audio_<?=$index?>_1" controls="true" style="display: none">
+                        <source type="audio/ogg" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,1&ext=ogg">
+                        <source type="audio/mpeg" src="getAudio.php?token=<?=$token?>&file=<?=$index?>,1&ext=mp3">
+                        Your browser does not support the Audio element.
+                    </audio>
                 </div>
                 <div class="col3">
                     <button type="button" class="switch b">B</button>
