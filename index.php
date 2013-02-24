@@ -69,15 +69,15 @@ if(isset($_POST['token'])) {
   <p>
     This survey will test your ability to detect a digital audio watermark embedded in music files.
   <p>
-    Digital audio watermarks are designed to hide extra information in an audio signal, usually for
+    Digital audio watermarks hide extra information in an audio signal, usually for
     copyright enforcement purposes. The watermarks are designed to be inaudible, but necessarily add
     some distortion to the original audio.
   <p>
     Below, you will find <?=count($filemap)?> groups of audio samples. In each group, you are presented with
     two versions of the same music sample. One
-    contains a digital watermark, and the other does not. You can switch back and forth between the two audio
-    samples using the control buttons. Listen closely and try to determine which sample contains a watermark
-    in each group. For best results, use headphones and take the test in a quiet environment.
+    contains a digital watermark, and the other does not. Switch back and forth between the two audio
+    samples using the control buttons. Listen closely and try to determine which sample in each group
+    contains a watermark. <strong>For best results, use headphones and take the test in a quiet environment.</strong>
   <p>
     The watermarking technology is the same in all audio samples.
     Your score will be reported after you submit your answers.
@@ -119,6 +119,11 @@ if(isset($_POST['token'])) {
                     </div>
                 </div>
             </div>
+            <? if ($fileset[0]['note']) { ?>
+            <div class="note">
+                <?=htmlspecialchars($fileset[0]['note'])?>
+            </div>
+            <? } ?>
         </li>
         <script>
           audioSwitcher[<?=$index?>] = new AudioSwitcher(document.getElementById('audioswitcher<?=$index?>'));
