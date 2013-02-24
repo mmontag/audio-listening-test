@@ -51,11 +51,16 @@ function fileScan($dir) {
     $name = $matches[1];
     $num = $matches[2];
     $extension = $matches[3];
+    $note = '';
+    if(file_exists($dir . '/' . $name . '.html')) {
+      $note = file_get_contents($dir . '/' . $name . '.html');
+    }
     $filemap[$name][] = array(
       "filename" => $filename,
       "name" => $name,
       "num" => $num,
-      "extension" => $extension
+      "extension" => $extension,
+      "note" => $note,
     );
   }
   return $filemap;

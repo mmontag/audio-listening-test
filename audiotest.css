@@ -24,13 +24,13 @@ button {
 h2.question {
     font-size: 100%;
     font-weight: normal;
+    margin-bottom: 0;
 }
 
 .listitem {
     width: 700px;
     padding: 30px 0;
-    margin-bottom: 30px;
-    background: #f8f8f8;
+    margin: 20px 0;
     font-size: 16px;
     font-weight: normal;
     vertical-align: middle;
@@ -114,4 +114,23 @@ p {
 .error {
     background-color: #ffeaea;
     outline: 2px solid #ca5050;
+}
+
+.note {
+    font-size: 12px;
+    color: #aaa;
+    font-weight: normal;
+    margin: 5px 0;
+}
+
+.note a, .note a:link, .note a:visited {
+    color: #888;
+}
+
+ol {
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 1px 0;
+    padding: 10px 0;
+    margin: 30px 0;
 }

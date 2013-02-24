@@ -7,7 +7,7 @@ require("config.inc.php");
 <!doctype html>
 <html>
 <head>
-	<title>Audio Test</title>
+	<title>Audio Watermark Listening Test</title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.1/backbone-min.js"></script>
@@ -18,7 +18,7 @@ require("config.inc.php");
 	<link rel="stylesheet" href="audiotest.css">
 </head>
 <body>
-<h1>Audio Test</h1>
+<h1>Audio Watermark Listening Test</h1>
 <?
 if(isset($_POST['token'])) {
 
@@ -88,6 +88,11 @@ if(isset($_POST['token'])) {
     foreach($filemap as $index => $fileset) {
     ?>
         <li><h2 class="question"><?=htmlspecialchars($fileset[0]['name'])?></h2>
+            <? if ($fileset[0]['note']) { ?>
+            <div class="note">
+                <?=$fileset[0]['note']?>
+            </div>
+            <? } ?>
             <div class="listitem" id="audioswitcher<?=$index?>">
                 <div class="col1">
                     <button type="button" class="switch a">A</button>
@@ -119,11 +124,6 @@ if(isset($_POST['token'])) {
                     </div>
                 </div>
             </div>
-            <? if ($fileset[0]['note']) { ?>
-            <div class="note">
-                <?=htmlspecialchars($fileset[0]['note'])?>
-            </div>
-            <? } ?>
         </li>
         <script>
           audioSwitcher[<?=$index?>] = new AudioSwitcher(document.getElementById('audioswitcher<?=$index?>'));
