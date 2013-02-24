@@ -1,7 +1,7 @@
 <?php
 
 require("audioswitcher.inc.php");
-require("dbconfig.inc.php");
+require("config.inc.php");
 
 ?>
 <!doctype html>

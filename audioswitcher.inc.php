@@ -21,8 +21,7 @@ function getToken() {
 
 // generates a seed based on provided token
 function getSeed($token) {
-  $salt = 'watermarkz';
-  $seed = hexdec(substr(md5($token . $salt), 0, 6));
+  $seed = hexdec(substr(md5($token . TOKEN_SALT), 0, 6));
   return $seed;
 }
 
