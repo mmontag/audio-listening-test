@@ -11,13 +11,16 @@ AudioSwitcher.prototype.init = function() {
 	// TODO: there is a bug here where toggling doesn't highlight active button
 	this.audioElements = this.$el.find('audio');
 	this.audioElements.bind('pause', function() {
-		self.$el.find('.switch').removeClass('active');
+		var index = self.audioElements.index(event.target);
+		self.$el.find('.switch').eq(index).removeClass('active');
 	});
 	this.audioElements.bind('play', function(event) {
 		var index = self.audioElements.index(event.target);
 		if (self.currentIndex !== null) {
 			//index = self.currentIndes;
 			if (index !== self.currentIndex) return;
+		} else {
+			self.currentIndex = index;
 		}
 		self.$el.find('.switch').eq(index).addClass('active');
 		// blunt hack: pause all audio elements outside this group
