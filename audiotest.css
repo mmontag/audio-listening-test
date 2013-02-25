@@ -63,9 +63,19 @@ button.submit {
     display: block;
 }
 
+ol {
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 1px 0;
+    padding: 20px 40px;
+    margin: 30px 0;
+    line-height: 140%;
+}
+
 ol.quiz {
-    padding-left: 70px;
+    padding: 10px 0px 10px 70px;
     white-space: nowrap;
+    line-height: inherit;
 }
 
 ol.quiz li {
@@ -121,16 +131,9 @@ p {
     color: #aaa;
     font-weight: normal;
     margin: 5px 0;
+    line-height: 140%;
 }
 
 .note a, .note a:link, .note a:visited {
     color: #888;
-}
-
-ol {
-    border-style: solid;
-    border-color: #ddd;
-    border-width: 1px 0;
-    padding: 10px 0;
-    margin: 30px 0;
 }

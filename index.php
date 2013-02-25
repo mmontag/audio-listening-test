@@ -14,6 +14,33 @@ require("config.inc.php");
 	<script type="text/javascript" src="audioswitcher.js"></script>
   <script>
       var audioSwitcher = [];
+      var timer = {
+        id: null,
+        totalTime: 0,
+        interval: 1000, // milliseconds
+        start: function () {
+          var self = this;
+          if (this.id != null) clearInterval(this.id);
+          this.id = setInterval(function () {
+            self.totalTime = self.totalTime + self.interval/1000;
+          }, this.interval);
+        },
+        stop: function () {
+          clearInterval(this.id);
+        }
+      };
+
+      timer.start();
+
+	    window.addEventListener('focus', function() {
+        timer.start();
+        console.log('starting timer at:', timer.totalTime);
+      }, false);
+
+      window.addEventListener('blur', function() {
+        timer.stop();
+        console.log('stopping timer at:', timer.totalTime);
+      }, false);
   </script>
 	<link rel="stylesheet" href="audiotest.css">
 </head>
@@ -25,6 +52,7 @@ if(isset($_POST['token'])) {
   $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
   $token = intval($_POST['token']);
+  $active_time = intval($_POST['active_time']);
   $ip_address = $mysqli->escape_string($_SERVER['REMOTE_HOST']);
   $environment = $mysqli->escape_string($_POST['environment']);
   $device = $mysqli->escape_string($_POST['device']);
@@ -41,8 +69,8 @@ if(isset($_POST['token'])) {
       $response = intval($value);
       $audio_name = $filemap[$audio_id][0]['name'];
       $correct[$audio_id] = $corr = $filemap[$audio_id][$response]['num'] == '2'; // when response value matches suffix for watermarked files
-      $query = "INSERT INTO responses (audio_id, audio_name, response, correct, environment, device, ip_address, token)
-                  VALUES ('$audio_id', '$audio_name', '$response', '$corr', '$environment', '$device', '$ip_address', '$token')";
+      $query = "INSERT INTO responses (audio_id, audio_name, response, correct, environment, device, ip_address, token, active_time)
+                  VALUES ('$audio_id', '$audio_name', '$response', '$corr', '$environment', '$device', '$ip_address', '$token', '$active_time')";
       $result = $mysqli->query($query);
       // echo("running $query.<br>");
       // echo($mysqli->error."<br>");
@@ -83,6 +111,7 @@ if(isset($_POST['token'])) {
     Your score will be reported after you submit your answers.
   <form action="index.php" method="post">
   <input type="hidden" name="token" value="<?=$token?>"/>
+  <input type="hidden" id="active_time" name="active_time" value="0"/>
 	<ol class="quiz">
     <?php
     foreach($filemap as $index => $fileset) {
@@ -163,6 +192,7 @@ if(isset($_POST['token'])) {
       var $button = $('button.submit');
       var $form = $('form');
       $button.bind('click', function() {
+        $('#active_time').val(timer.totalTime);
         if (validateForm()) {
             $form.submit();
         }
