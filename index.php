@@ -100,6 +100,69 @@ if(isset($_POST['token'])) {
     Digital audio watermarks hide extra information in an audio signal, usually for
     copyright enforcement purposes. The watermarks are designed to be inaudible, but necessarily add
     some distortion to the original audio.
+
+  <h2>Training Phase</h2>
+  <p>
+    The information below is meant to familiarize you with the sound qualities of the watermark before taking the test.
+    Take your time with this material before you begin answering questions.
+  <p>
+    The following sample demonstrates a greatly exaggerated version of the watermark applied to a noise signal.
+    The watermark starts after 2 seconds.
+  <figure>
+    <audio controls="true">
+      <source type="audio/mpeg" src="noise-watermarked.mp3">
+      <source type="audio/ogg" src="noise-watermarked.ogg">
+    </audio>
+      <figcaption>Audio sample containing an exaggerated watermark.</figcaption>
+        </figure>
+  <p>
+    This distortion is visualized in the figure below, showing discrete blocks of noise that fluctuate in intensity over time.
+    <figure>
+      <img src="watermark.png" width="400" alt="Spectrogram of digital audio watermark">
+      <figcaption>A spectrogram of the watermark by itself. The distortion lies in the region from 1 to 3 kHz.</figcaption>
+    </figure>
+
+
+  <p>
+    In the following example, sample <strong>A</strong> is the original, and sample <strong>B</strong> is watermarked.
+    The distortion is most audible during the loudest portion of the watermarked sample (<strong>B</strong>).
+    Focus your attention on the voices of the choir.
+    Listen for the rapid fluttering distortion, similar in character to the exaggerated example above.
+    Switch back to the original sample (<strong>A</strong>) and notice that the fluttering is absent.
+  <div class="listitem" id="audioswitcher_reference">
+    <div class="col1">
+      <button type="button" class="switch a">A</button>
+      <div class="chooser">
+        Original
+      </div>
+    </div>
+    <div class="col2">
+      <button type="button" class="toggle">Toggle &harr;</button>
+      <button type="button" class="rewind">Rewind &#8634; 3 sec</button><br>
+      <button type="button" class="toggleAndRewind">Toggle and Rewind &#8634; 3 sec</button><br>
+      <audio id="audio_reference_0" controls="true">
+        <source type="audio/ogg" src="ravel-original.ogg">
+        <source type="audio/mpeg" src="ravel-original.mp3">
+        Your browser does not support the Audio element.
+      </audio>
+      <audio id="audio_reference_1" controls="true" style="display: none">
+        <source type="audio/ogg" src="ravel-watermarked.ogg">
+        <source type="audio/mpeg" src="ravel-watermarked.mp3">
+        Your browser does not support the Audio element.
+      </audio>
+    </div>
+    <div class="col3">
+      <button type="button" class="switch b">B</button>
+      <div class="chooser">
+        Watermarked
+      </div>
+    </div>
+  </div>
+  <script>
+    audioSwitcher['reference'] = new AudioSwitcher(document.getElementById('audioswitcher_reference'), true);
+  </script>
+
+  <h2>Testing</h2>
   <p>
     Below, you will find <?=count($filemap)?> groups of audio samples. In each group, you are presented with
     two versions of the same music sample. One
@@ -109,6 +172,7 @@ if(isset($_POST['token'])) {
   <p>
     The watermarking technology is the same in all audio samples.
     Your score will be reported after you submit your answers.
+
   <form action="index.php" method="post">
   <input type="hidden" name="token" value="<?=$token?>"/>
   <input type="hidden" id="active_time" name="active_time" value="0"/>
