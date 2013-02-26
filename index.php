@@ -170,7 +170,6 @@ if(isset($_POST['token'])) {
     samples using the control buttons. Listen closely and try to determine which sample in each group
     contains a watermark. <strong>For best results, use headphones and take the test in a quiet environment.</strong>
   <p>
-    The watermarking technology is the same in all audio samples.
     Your score will be reported after you submit your answers.
 
   <form action="index.php" method="post">
