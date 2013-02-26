@@ -226,14 +226,6 @@ if(isset($_POST['token'])) {
     ?>
 	</ol>
   <div class="centered">
-      <!--
-      <div class="split">
-          <p>My listening environment is:
-          <p>
-              <input type="radio" id="environment_1" name="environment" value="quiet"><label for="environment_1">Quiet</label><br>
-              <input type="radio" id="environment_2" name="environment" value="normal"><label for="environment_2">Normal</label><br>
-              <input type="radio" id="environment_3" name="environment" value="loud"><label for="environment_3">Loud</label><br>
-      </div>
       <div class="split">
           <p>I am listening with:
           <p>
@@ -242,13 +234,12 @@ if(isset($_POST['token'])) {
               <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label><br>
       </div>
       <div class="split">
-          <p>Did the watermarks bother you?
+          <p>My listening environment is:
           <p>
-              <input type="radio" id="device_1" name="device" value="headphones"><label for="device_1">Headphones</label><br>
-              <input type="radio" id="device_2" name="device" value="speakers"><label for="device_2">Speakers</label><br>
-              <input type="radio" id="device_3" name="device" value="laptop"><label for="device_3">Laptop Speakers</label><br>
+              <input type="radio" id="environment_1" name="environment" value="quiet"><label for="environment_1">Quiet</label><br>
+              <input type="radio" id="environment_2" name="environment" value="normal"><label for="environment_2">Normal</label><br>
+              <input type="radio" id="environment_3" name="environment" value="loud"><label for="environment_3">Loud</label><br>
       </div>
-      -->
   </div>
   <button class="submit" type="button">Submit My Answers</button>
   <p class="centered formMessage"></p>
